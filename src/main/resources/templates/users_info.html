@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User info</title>
+</head>
+<body>
+<h2>All users</h2>
+<br>
+<form action="saveUsers" modelattribute="user">
+    Name<input type="text" name="username">
+    <br>
+    Surname<input type="text" name="surname">
+    <br>
+    City<input type="text" name="city">
+    <br>
+    Password<input type="text" name="password">
+    <br>
+    <input type="submit" value="ok">
+</form>
+
+</body>
+</html>
