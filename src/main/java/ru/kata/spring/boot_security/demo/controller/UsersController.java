@@ -7,20 +7,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.security.UsersServiceDet;
 import ru.kata.spring.boot_security.demo.service.UsersService;
 
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class UsersController {
 
     private final UsersService usersService;
+    private final RoleRepository roleRepository;
 
-    public UsersController(UsersService usersService) {
+    public UsersController(UsersService usersService, RoleRepository roleRepository) {
         this.usersService = usersService;
+        this.roleRepository = roleRepository;
     }
 
     @RequestMapping("/admin")
@@ -32,7 +35,7 @@ public class UsersController {
     }
 
     @RequestMapping("/user")
-    public String UserPage (Model model) {
+    public String UserPage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UsersServiceDet usersServiceDet = (UsersServiceDet) authentication.getPrincipal();
         User user = usersServiceDet.getUser();
@@ -41,11 +44,11 @@ public class UsersController {
     }
 
     @RequestMapping("/")
-    public String helloPage () {
+    public String helloPage() {
         return "hello";
     }
 
-    @RequestMapping ("/admin/addNewUsers")
+    @RequestMapping("/admin/addNewUsers")
     public String addNewUsers(Model model) {
         User user = new User();
         model.addAttribute("user", user);
@@ -54,7 +57,12 @@ public class UsersController {
 
     @RequestMapping("/admin/saveUsers")
     public String saveUsers(@ModelAttribute("user") User user) {
-        usersService.saveUsers(user);
+        Role role;
+        if (user.getRoles() == null) {
+            usersService.addRole(role = new Role("ROLE_USER"));
+            user.setRoles(Collections.singleton(role));
+            usersService.saveUsers(user);
+        }
         return "redirect:/admin";
     }
 
@@ -66,7 +74,7 @@ public class UsersController {
     }
 
     @PostMapping("/admin/edit")
-    public String updateInfo(@ModelAttribute("user") User user){
+    public String updateInfo(@ModelAttribute("user") User user) {
         usersService.saveUsers(user);
         return "redirect:/admin";
     }

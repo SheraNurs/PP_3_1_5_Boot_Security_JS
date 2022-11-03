@@ -39,7 +39,14 @@ public class User {
         this.roles = roles;
     }
 
-//    public User(String username, String surname, String city, String password) {
+    public User(String username, String surname, String city, String password) {
+        this.username = username;
+        this.surname = surname;
+        this.city = city;
+        this.password = password;
+    }
+
+    //    public User(String username, String surname, String city, String password) {
 //        this.username = username;
 //        this.surname = surname;
 //        this.city = city;
