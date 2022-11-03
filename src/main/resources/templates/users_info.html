@@ -8,17 +8,60 @@
 <body>
 <h2>All users</h2>
 <br>
-<form action="saveUsers" modelattribute="user">
-    Name<input type="text" name="username">
-    <br>
-    Surname<input type="text" name="surname">
-    <br>
-    City<input type="text" name="city">
-    <br>
-    Password<input type="text" name="password">
-    <br>
-    <input type="submit" value="ok">
+<form action="#" th:action="@{/admin/saveUsers}" th:object="${user}" method="post">
+    <table>
+        <tr>
+            <td>
+                <label for="id">UserId</label>
+                <input readonly type="number" th:field="*{id}" id="id">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="username">Enter name</label>
+                <input type="text" th:field="*{username}" id="username"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="surname">Enter surname</label>
+                <input type="text" th:field="*{surname}" id="surname"/>
+            </td>
+        </tr>
+        <br>
+        <tr>
+            <td>
+                <label for="city">Enter city</label>
+                <input  type="text" th:field="*{city}" id="city"/>
+            </td>
+        </tr>
+        <br>
+        <tr>
+            <td>
+                <label for="password">Enter password</label>
+                <input  type="text" th:field="*{password}" id="password"/>
+            </td>
+        </tr>
+        <br>
+        <td>
+            <input type="submit" class="buttonEdit" value="ok"/>
+        </td>
+        </tr>
+    </table>
 </form>
+<!--<form action="saveUsers" modelattribute="user">-->
+<!--    Name<input type="text" name="username">-->
+<!--    <br>-->
+<!--    Surname<input type="text" name="surname">-->
+<!--    <br>-->
+<!--    City<input type="text" name="city">-->
+<!--    <br>-->
+<!--    Password<input type="text" name="password">-->
+<!--    <br>-->
+<!--    Role<input type="text" name="roles">-->
+<!--    <br>-->
+<!--    <input type="submit" value="ok">-->
+<!--</form>-->
 
 </body>
 </html>

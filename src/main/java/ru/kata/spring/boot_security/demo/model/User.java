@@ -20,11 +20,11 @@ public class User {
 
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
     private Set<Role> roles;
 
     public User() {
@@ -38,6 +38,13 @@ public class User {
         this.password = password;
         this.roles = roles;
     }
+
+//    public User(String username, String surname, String city, String password) {
+//        this.username = username;
+//        this.surname = surname;
+//        this.city = city;
+//        this.password = password;
+//    }
 
     public int getId() {
         return id;
@@ -95,15 +102,5 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", city='" + city + '\'' +
                 '}';
-    }
-
-    public void addRole(Role role) {
-        roles.add(role);
-        role.getUsers().add(this);
-    }
-
-    public void removeRole(Role role) {
-        roles.remove(role);
-        role.getUsers().remove(this);
     }
 }

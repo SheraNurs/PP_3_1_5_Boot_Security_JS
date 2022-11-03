@@ -5,20 +5,24 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UsersRepository;
 import ru.kata.spring.boot_security.demo.security.UsersServiceDet;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UsersService implements UserDetailsService {
 
     private final UsersRepository usersRepository;
 
-    public UsersService(UsersRepository usersRepository) {
+    private final RoleRepository roleRepository;
+
+    public UsersService(UsersRepository usersRepository, RoleRepository roleRepository) {
         this.usersRepository = usersRepository;
+        this.roleRepository = roleRepository;
     }
 
     public List<User> getAllUsers() {
@@ -48,6 +52,14 @@ public class UsersService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found!");
         }
         return new UsersServiceDet(optional.get());
+    }
+
+    public void addRole(Role role) {
+        roleRepository.save(role);
+    }
+
+    public List<Role> roleList() {
+        return roleRepository.findAll();
     }
 
 }
