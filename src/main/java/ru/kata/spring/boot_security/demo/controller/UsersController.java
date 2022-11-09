@@ -28,10 +28,16 @@ public class UsersController {
 
     @RequestMapping("/admin")
     public String printUsers(Model model) {
-
         List<User> allUsers = usersService.getAllUsers();
         model.addAttribute("allUs", allUsers);
-        return "users";
+        User user = new User();
+        model.addAttribute("user", user);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UsersServiceDet usersServiceDet = (UsersServiceDet) authentication.getPrincipal();
+        User user1 = usersServiceDet.getUser();
+        model.addAttribute("user1", user1);
+        model.addAttribute("listRoles", usersService.roleList());
+        return "AdminPage";
     }
 
     @RequestMapping("/user")
@@ -40,7 +46,7 @@ public class UsersController {
         UsersServiceDet usersServiceDet = (UsersServiceDet) authentication.getPrincipal();
         User user = usersServiceDet.getUser();
         model.addAttribute("user1", user);
-        return "user";
+        return "userPage";
     }
 
     @RequestMapping("/")
@@ -48,21 +54,22 @@ public class UsersController {
         return "hello";
     }
 
-    @RequestMapping("/admin/addNewUsers")
-    public String addNewUsers(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        return "users_info";
-    }
+//    @RequestMapping("/admin/addNewUsers")
+//    public String addNewUsers(Model model) {
+//        User user = new User();
+//        model.addAttribute("user", user);
+//        return "infoUsers";
+//    }
 
     @RequestMapping("/admin/saveUsers")
     public String saveUsers(@ModelAttribute("user") User user) {
         Role role;
         if (user.getRoles() == null) {
             usersService.addRole(role = new Role("ROLE_USER"));
-            user.setRoles(Collections.singleton(role));
+            user.setRoles(Collections.singletonList(role));
             usersService.saveUsers(user);
         }
+        usersService.saveUsers(user);
         return "redirect:/admin";
     }
 
@@ -70,7 +77,7 @@ public class UsersController {
     public String updateUserGet(@PathVariable("id") int id, Model model) {
         User user = usersService.getUsers(id);
         model.addAttribute("user", user);
-        return "edit";
+        return "/admin/edit";
     }
 
     @PostMapping("/admin/edit")

@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,7 +18,9 @@ public class User {
 
     private String surname;
 
-    private String city;
+    private int age;
+
+    private String email;
 
     private String password;
 
@@ -25,24 +29,26 @@ public class User {
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
-    private Set<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
     public User() {
     }
 
-    public User(int id, String username, String surname, String city, String password, Set<Role> roles) {
+    public User(int id, String username, String surname, int age, String password, String email, List<Role> roles) {
         this.id = id;
         this.username = username;
         this.surname = surname;
-        this.city = city;
+        this.age = age;
         this.password = password;
+        this.email = email;
         this.roles = roles;
     }
 
-    public User(String username, String surname, String city, String password) {
+    public User(String username, String surname, int age, String email, String password) {
         this.username = username;
         this.surname = surname;
-        this.city = city;
+        this.age = age;
+        this.email = email;
         this.password = password;
     }
 
@@ -81,24 +87,32 @@ public class User {
         this.surname = surname;
     }
 
-    public String getCity() {
-        return city;
+    public int getAge() {
+        return age;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -107,7 +121,8 @@ public class User {
                 "id=" + id +
                 ", name='" + username + '\'' +
                 ", surname='" + surname + '\'' +
-                ", city='" + city + '\'' +
+                ", city='" + age + '\'' +
+                ", email='" + email +'\'' +
                 '}';
     }
 }
