@@ -1,19 +1,14 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
-import ru.kata.spring.boot_security.demo.security.UsersServiceDet;
 import ru.kata.spring.boot_security.demo.service.UsersService;
 
 
 import java.util.Collections;
-import java.util.List;
 
 @Controller
 public class UsersController {
@@ -28,24 +23,16 @@ public class UsersController {
 
     @RequestMapping("/admin")
     public String printUsers(Model model) {
-        List<User> allUsers = usersService.getAllUsers();
-        model.addAttribute("allUs", allUsers);
-        User user = new User();
-        model.addAttribute("user", user);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UsersServiceDet usersServiceDet = (UsersServiceDet) authentication.getPrincipal();
-        User user1 = usersServiceDet.getUser();
-        model.addAttribute("user1", user1);
+        model.addAttribute("allUs", usersService.getAllUsers());
+        model.addAttribute("user", new User());
+        model.addAttribute("user1", usersService.getCurrentUser());
         model.addAttribute("listRoles", usersService.roleList());
         return "AdminPage";
     }
 
     @RequestMapping("/user")
     public String UserPage(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UsersServiceDet usersServiceDet = (UsersServiceDet) authentication.getPrincipal();
-        User user = usersServiceDet.getUser();
-        model.addAttribute("user1", user);
+        model.addAttribute("user1", usersService.getCurrentUser());
         return "userPage";
     }
 
@@ -54,22 +41,16 @@ public class UsersController {
         return "hello";
     }
 
-//    @RequestMapping("/admin/addNewUsers")
-//    public String addNewUsers(Model model) {
-//        User user = new User();
-//        model.addAttribute("user", user);
-//        return "infoUsers";
-//    }
-
     @RequestMapping("/admin/saveUsers")
     public String saveUsers(@ModelAttribute("user") User user) {
-        Role role;
-        if (user.getRoles() == null) {
-            usersService.addRole(role = new Role("ROLE_USER"));
-            user.setRoles(Collections.singletonList(role));
-            usersService.saveUsers(user);
-        }
+        user.setRoles(Collections.singletonList(roleRepository.getRoleByName("ROLE_USER")));
         usersService.saveUsers(user);
+        return "redirect:/admin";
+    }
+
+    @RequestMapping("/admin/updateUsers")
+    public String updateUsers(@ModelAttribute("user") User user) {
+        usersService.updateUsers(user);
         return "redirect:/admin";
     }
 
@@ -80,9 +61,9 @@ public class UsersController {
         return "/admin/edit";
     }
 
-    @PostMapping("/admin/edit")
+    @RequestMapping("/admin/edit")
     public String updateInfo(@ModelAttribute("user") User user) {
-        usersService.saveUsers(user);
+        usersService.updateUsers(user);
         return "redirect:/admin";
     }
 

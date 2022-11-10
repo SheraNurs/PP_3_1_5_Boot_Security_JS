@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.service;
 
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,6 +36,11 @@ public class UsersService implements UserDetailsService {
         usersRepository.save(user);
     }
 
+    public void updateUsers(User user) {
+        user.setRoles(user.getRoles());
+        usersRepository.save(user);
+    }
+
     public User getUsers(int id) {
         ru.kata.spring.boot_security.demo.model.User user = null;
         Optional<User> optional = usersRepository.findById(id);
@@ -41,6 +48,18 @@ public class UsersService implements UserDetailsService {
             user = optional.get();
         return user;
     }
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UsersServiceDet usersServiceDet = (UsersServiceDet) authentication.getPrincipal();
+        return usersServiceDet.getUser();
+    }
+
+    public void setUsersRole(User user) {
+        List<Role> role = user.getRoles();
+        user.setRoles(role);
+    }
+
 
     public void deleteUsers(int id) {
         usersRepository.deleteById(id);

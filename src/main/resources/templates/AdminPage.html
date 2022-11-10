@@ -18,7 +18,8 @@
       <a class="font-weight-bold text-white"></a>
       <a> with roles: </a>
       <span class="text-white h5">
-                <th:block class="font-weight-normal" th:text="${user1.getRoles()}"></th:block>
+                <th:block class="font-weight-normal">
+                                        <span th:each="role : ${user1.getRoles()}" th:text="${role}"></span></th:block>
             </span>
       <a th:href="@{/logout}" class="float-right text-secondary"> Logout </a>
     </div>
@@ -74,7 +75,11 @@
                       <td th:utext="${user.getSurname()}"></td>
                       <td th:utext="${user.getAge()}"></td>
                       <td th:utext="${user.getEmail}"></td>
-                      <td th:utext="${user.getRoles()}"></td>
+                      <td>
+                         <span th:each="role : ${user.getRoles()}">
+                                        <span th:text="${role}"></span>
+                                    </span>
+                      </td>
                       <td><button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="${'#editUser' + user.getId()}" th:data-row="${user}">Edit</button></td>
 
                       <div class="modal fade" th:id="${'editUser' + user.getId()}" tabindex="-1" role="dialog"
@@ -90,7 +95,7 @@
                             <div class="modal-body text-center">
                               <div class="form-group required">
                                 <div class="controls">
-                                  <form action="#" th:action="@{/admin/edit}" th:object="${user}" th:method="POST"  th:id="${'editUserButton' + user.getId()}">
+                                  <form action="#" th:action="@{/admin/edit}" th:object="${user}"  th:id="${'editUserButton' + user.getId()}">
                                     <p>
                                       <label class="container-fluid"
                                              for="id1"><strong>ID</strong>
