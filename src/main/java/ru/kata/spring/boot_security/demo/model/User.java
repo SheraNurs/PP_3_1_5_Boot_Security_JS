@@ -29,7 +29,7 @@ public class User {
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
-    private List<Role> roles = new ArrayList<>();
+    private List<Role> roles;
 
     public User() {
     }
@@ -51,13 +51,6 @@ public class User {
         this.email = email;
         this.password = password;
     }
-
-    //    public User(String username, String surname, String city, String password) {
-//        this.username = username;
-//        this.surname = surname;
-//        this.city = city;
-//        this.password = password;
-//    }
 
     public int getId() {
         return id;

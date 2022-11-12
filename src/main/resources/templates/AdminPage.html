@@ -95,7 +95,7 @@
                             <div class="modal-body text-center">
                               <div class="form-group required">
                                 <div class="controls">
-                                  <form action="#" th:action="@{/admin/edit}" th:object="${user}"  th:id="${'editUserButton' + user.getId()}">
+                                  <form action="#" th:action="@{/admin/edit/{id}(id=${user.id})}" th:object="${user}" th:id="${'editUserButton' + user.getId()}">
                                     <p>
                                       <label class="container-fluid"
                                              for="id1"><strong>ID</strong>
@@ -148,8 +148,8 @@
                                     </p>
                                     <label class="container-fluid"
                                            for="roles1"><strong>Role</strong>
-                                      <select multiple class="form-control" name="roles" id="roles1" size="2" th:value="${user.roles}" >
-                                        <option th:each="role : ${listRoles}" th:value="${role}" th:text="${role}"/>
+                                      <select multiple class="form-control" name="roles" id="roles1" size="2" th:value="${user.roles}">
+                                        <option th:each="role : ${listRoles}" th:value="${role.getId()}" th:text="${role}"/>
                                       </select>
                                     </label>
                                 </div>
@@ -180,7 +180,7 @@
                             <div class="modal-body text-center">
                               <div class="form-group required">
                                 <div class="controls">
-                                  <form action="#" th:action="@{/admin/deleteUsers(userId=${user.getId})}" th:object="${user}" th:method="POST"  th:id="${'editUserButton' + user.getId()}">
+                                  <form th:id="${'editUserButton' + user.getId()}" th:action="@{/admin/deleteUsers/{userId}(userId=${user.id})}" th:object="${user}">
                                     <p>
                                       <label class="container-fluid"
                                              for="id2"><strong>ID</strong>
@@ -310,7 +310,7 @@
                           <label class="container-fluid"
                                  for="roles"><strong>Role</strong>
                             <select multiple class="form-control" name="roles" id="roles" size="2" th:value="${user.roles}" >
-                              <option th:each="role : ${listRoles}" th:value="${role}" th:text="${role}"/>
+                              <option th:each="role : ${listRoles}" th:value="${role.getId()}" th:text="${role}"/>
                             </select>
                           </label>
                           <button type="submit" id="newUserButton"

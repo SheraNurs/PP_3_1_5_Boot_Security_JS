@@ -23,7 +23,7 @@ public class UsersService implements UserDetailsService {
 
     private final RoleRepository roleRepository;
 
-    public UsersService(UsersRepository usersRepository, RoleRepository roleRepository) {
+    public UsersService(UsersRepository usersRepository,RoleRepository roleRepository) {
         this.usersRepository = usersRepository;
         this.roleRepository = roleRepository;
     }
@@ -37,7 +37,6 @@ public class UsersService implements UserDetailsService {
     }
 
     public void updateUsers(User user) {
-        user.setRoles(user.getRoles());
         usersRepository.save(user);
     }
 
@@ -55,12 +54,6 @@ public class UsersService implements UserDetailsService {
         return usersServiceDet.getUser();
     }
 
-    public void setUsersRole(User user) {
-        List<Role> role = user.getRoles();
-        user.setRoles(role);
-    }
-
-
     public void deleteUsers(int id) {
         usersRepository.deleteById(id);
     }
@@ -74,12 +67,7 @@ public class UsersService implements UserDetailsService {
         return new UsersServiceDet(optional.get());
     }
 
-    public void addRole(Role role) {
-        roleRepository.save(role);
-    }
-
     public List<Role> roleList() {
         return roleRepository.findAll();
     }
-
 }
