@@ -9,7 +9,6 @@ import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.UsersService;
 
 import java.util.Collections;
-import java.util.List;
 
 
 @Component
