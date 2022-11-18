@@ -1,11 +1,13 @@
 package ru.kata.spring.boot_security.demo.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -18,21 +20,19 @@ import java.util.*;
 @Service
 public class UsersService implements UserDetailsService {
 
-
-    private final UsersRepository usersRepository;
-
-    private final RoleRepository roleRepository;
-
-    public UsersService(UsersRepository usersRepository,RoleRepository roleRepository) {
-        this.usersRepository = usersRepository;
-        this.roleRepository = roleRepository;
-    }
+    @Autowired
+    private UsersRepository usersRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<User> getAllUsers() {
         return usersRepository.findAll();
     }
 
     public void saveUsers(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         usersRepository.save(user);
     }
 

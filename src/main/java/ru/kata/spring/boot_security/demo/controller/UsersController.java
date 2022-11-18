@@ -30,33 +30,4 @@ public class UsersController {
         model.addAttribute("user1", usersService.getCurrentUser());
         return "userPage";
     }
-
-    @RequestMapping("/")
-    public String helloPage() {
-        return "hello";
-    }
-
-    @RequestMapping("/admin/saveUsers")
-    public String saveUsers(@ModelAttribute("user") User user) {
-        usersService.saveUsers(user);
-        return "redirect:/admin";
-    }
-
-    @PutMapping("/admin/updateUsers")
-    public String updateUsers(@ModelAttribute("user") User user) {
-        usersService.updateUsers(user);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/admin/edit/{id}")
-    public String updateInfo(@ModelAttribute("user") User user) {
-        usersService.updateUsers(user);
-        return "redirect:/admin";
-    }
-
-    @RequestMapping("/admin/deleteUsers/{userId}")
-    public String deleteUsers(@PathVariable("userId") int id) {
-        usersService.deleteUsers(id);
-        return "redirect:/admin";
-    }
 }
